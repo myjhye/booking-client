@@ -35,3 +35,16 @@ export async function getRoomTypes() {
         throw new Error("객실 타입을 가져오는데 실패했습니다")
     }
 }
+
+
+// 객실 전체 조회
+export async function getAllRooms() {
+    
+    try {
+        const result = await api.get("/rooms/all-rooms")
+        return result.data;
+    }
+    catch(error) {
+        throw new Error("전체 객실 정보를 가져오는데 실패했습니다")
+    }
+}
