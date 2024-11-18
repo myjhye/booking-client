@@ -1,10 +1,12 @@
 // 기존 객실 목록
 
 import { useState } from "react"
-import { getAllRooms } from "../utils/ApiFunctions";
+import { deleteRoom, getAllRooms } from "../utils/ApiFunctions";
 import { useEffect } from "react";
 import RoomFilter from "../common/RoomFilter";
 import RoomPaginator from "../common/RoomPaginator";
+import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function ExistingRooms() {
     
@@ -17,12 +19,14 @@ export default function ExistingRooms() {
     const [isLoading, setIsLoading] = useState(false);
     // 필터링된 객실 목록
     const [filteredRooms, setFilteredRooms] = useState([]);
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         fetchRooms();
     }, [])
 
-    // 객실 데이터 호출
+    // 객실 전체 조회 api 호출
     const fetchRooms = async() => {
         setIsLoading(true)
 
@@ -35,6 +39,28 @@ export default function ExistingRooms() {
         catch(error) {
             console.error(error)
         }
+    }
+
+    // 객실 개별 삭제 api 호출
+    const handleDelete = async(roomId) => {
+        try {
+            const result = await deleteRoom(roomId)
+            if (result === "") {
+                setSuccessMessage(`객실 번호 ${roomId} 삭제 성공`)
+                fetchRooms()
+            }
+            else {
+                console.error(`객실 번호 ${roomId} 삭제 실패`)
+            }
+        }
+        catch(error) {
+            setErrorMessage(error.message)
+        }
+        
+        setTimeout(() => {
+            setSuccessMessage("")
+            setErrorMessage("")
+        }, 3000)
     }
 
 
@@ -97,11 +123,26 @@ export default function ExistingRooms() {
                                         <td className="px-6 py-4">{room.roomType}</td>
                                         <td className="px-6 py-4">{room.roomPrice}</td>
                                         <td className="px-6 py-4 flex justify-center gap-2">
-                                            <button className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md">
-                                                View / Edit
-                                            </button>
-                                            <button className="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md">
-                                                Delete
+                                            <Link
+                                                to={`/edit-room/${room.id}`} 
+                                                className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md"
+                                            >
+                                                <span 
+                                                    className="btn btn-info btn-sm"
+                                                >
+                                                    <FaEye />
+                                                </span>
+                                                <span 
+                                                    className="btn btn-warning btn-sm"
+                                                >
+                                                    <FaEdit />
+                                                </span>
+                                            </Link>
+                                            <button 
+                                                className="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md"
+                                                onClick={() => handleDelete(room.id)}
+                                            >
+                                                <FaTrashAlt />
                                             </button>
                                         </td>
                                     </tr>

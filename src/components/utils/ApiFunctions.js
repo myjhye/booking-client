@@ -48,3 +48,16 @@ export async function getAllRooms() {
         throw new Error("전체 객실 정보를 가져오는데 실패했습니다")
     }
 }
+
+
+// 객실 개별 삭제
+export async function deleteRoom(roomId) {
+    
+    try {
+        const result = await api.delete(`/rooms/delete/room/${roomId}`)
+        return result.data;
+    }
+    catch(error) {
+        throw new Error(`개별 객실 정보를 삭제하는데 실패했습니다: ${error.message}`)
+    }
+}
