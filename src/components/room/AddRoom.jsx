@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { addRoom } from "../utils/ApiFunctions";
 import RoomTypeSelector from "../common/RoomTypeSelector";
+import { Link } from "react-router-dom";
 
 export default function AddRoom() {
     
@@ -189,9 +190,20 @@ export default function AddRoom() {
                         )}
                     </div>
 
-                    <button className="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition">
-                        객실 저장
-                    </button>
+                    <div className="flex gap-4">
+                        <Link
+                            to="/existing-rooms"
+                            className="w-full py-3 bg-gray-300 text-gray-700 font-semibold rounded-md hover:bg-gray-400 transition text-center"
+                        >
+                            뒤로가기
+                        </Link>
+                        <button
+                            className="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
+                            type="submit"
+                        >
+                            객실 수정
+                        </button>
+                    </div>
                 </form>
         </section>
     );
