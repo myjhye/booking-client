@@ -61,3 +61,35 @@ export async function deleteRoom(roomId) {
         throw new Error(`개별 객실 정보를 삭제하는데 실패했습니다: ${error.message}`)
     }
 }
+
+
+
+// 객실 개별 수정
+export async function updateRoom(roomId, roomData) {
+
+    const formData = new FormData()
+    formData.append("roomType", roomData.roomType)
+    formData.append("roomPrice", roomData.roomPrice)
+
+    const response = await api.put(`/rooms/update/${roomId}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+    
+    return response
+}
+
+
+
+// 객실 개별 조회
+export async function getRoomById(roomId) {
+    
+    try {
+        const result = await api.get(`/rooms/room/${roomId}`)
+        return result.data
+    }
+    catch(error) {
+        throw new Error(`개별 객실 정보를 가져오는데 실패했습니다: ${error.message}`)
+    }
+}
