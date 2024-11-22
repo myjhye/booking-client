@@ -17,6 +17,17 @@ export default function AddRoom() {
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
+
+    // 객실 유형 데이터
+    const roomTypes = [
+        "Suite room",
+        "Family room",
+        "Penthouse",
+        "Deluxe room",
+        "Superior room",
+    ];
+
+
     // 객실 유형 변경 함수
     const handleRoomTypeChange = (type) => {
         setNewRoom({
@@ -115,7 +126,31 @@ export default function AddRoom() {
                         <label htmlFor="roomType" className="block text-gray-700 font-medium mb-2">
                             Room Type
                         </label>
-                        <RoomTypeSelector onRoomTypeChange={handleRoomTypeChange} />
+
+                        {/* 객실 유형 버튼 */}
+                        <div className="flex space-x-2 justify-center mx-auto">
+                            {roomTypes.map((type, index) => (
+                                <label
+                                    key={index}
+                                    className={`px-4 py-2 border rounded-md cursor-pointer ${
+                                        newRoom.roomType === type
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-white text-gray-700 border-gray-300"
+                                    }`}
+                                    onClick={() => handleRoomTypeChange(type)}
+                                >
+                                    <input
+                                        type="radio"
+                                        name="roomType"
+                                        value={type}
+                                        checked={newRoom.roomType === type}
+                                        onChange={() => handleRoomTypeChange(type)}
+                                        className="hidden"
+                                    />
+                                    {type}
+                                </label>
+                            ))}
+                        </div>
                     </div>
 
                     <div>

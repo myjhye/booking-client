@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getRoomById, updateRoom } from "../utils/ApiFunctions";
 import { Link, useParams } from "react-router-dom";
+import RoomTypeSelector from "../common/RoomTypeSelector";
 
 export default function EditRoom() {
     const [room, setRoom] = useState({
@@ -14,11 +15,27 @@ export default function EditRoom() {
 
     const { roomId } = useParams();
 
+    // 객실 유형 데이터
+    const roomTypes = [
+        "Suite room",
+        "Family room",
+        "Penthouse",
+        "Deluxe room",
+        "Superior room",
+    ];
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setRoom({
             ...room,
             [name]: value,
+        });
+    };
+
+    const handleRoomTypeChange = (type) => {
+        setRoom({
+            ...room,
+            roomType: type,
         });
     };
 
@@ -53,9 +70,10 @@ export default function EditRoom() {
         e.preventDefault();
     
         try {
+            // 객실 수정 api 호출
             const response = await updateRoom(roomId, room);
             if (response.status === 200) {
-                setSuccessMessage("Room updated successfully!");
+                setSuccessMessage("객실이 수정되었습니다!");
                 const updatedRoomData = await getRoomById(roomId);
                 setRoom(updatedRoomData);
                 
@@ -81,8 +99,17 @@ export default function EditRoom() {
         <section className="w-full text-center">
             <h2 className="text-3xl font-bold my-6">기존 객실 수정</h2>
     
-            {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
-            {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
+            {successMessage && (
+                <div className="fixed top-4 left-1/2 transform -translate-x-1/2 text-green-500 py-2 px-4 rounded shadow-lg text-center">
+                    {successMessage}
+                </div>
+            )}
+
+            {successMessage && (
+                <div className="fixed top-4 left-1/2 transform -translate-x-1/2 text-red-500 py-2 px-4 rounded shadow-lg text-center">
+                    {errorMessage}
+                </div>
+            )}
     
             <div>
                 {imagePreview && (
@@ -99,15 +126,30 @@ export default function EditRoom() {
                     <label htmlFor="roomType" className="block text-gray-700 font-medium mb-2">
                         Room Type
                     </label>
-                    <input
-                        className="w-full p-3 border border-gray-300 rounded-md"
-                        required
-                        id="roomType"
-                        name="roomType"
-                        type="text"
-                        value={room.roomType}
-                        onChange={handleInputChange}
-                    />
+                    
+                    <div className="flex space-x-2 justify-center mx-auto">
+                        {roomTypes.map((type, index) => (
+                            <label
+                                key={index}
+                                className={`px-4 py-2 border rounded-md cursor-pointer ${
+                                    room.roomType === type
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-white text-gray-700 border-gray-300"
+                                }`}
+                                onClick={() => handleRoomTypeChange(type)}
+                            >
+                                <input
+                                    type="radio"
+                                    name="roomType"
+                                    value={type}
+                                    checked={room.roomType === type}
+                                    onChange={() => handleRoomTypeChange(type)}
+                                    className="hidden"
+                                />
+                                {type}
+                            </label>
+                        ))}
+                    </div>
                 </div>
     
                 <div>
