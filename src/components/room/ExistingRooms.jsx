@@ -87,6 +87,11 @@ export default function ExistingRooms() {
 
     return (
         <>
+            {successMessage && (
+                <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded shadow-lg text-center">
+                    {successMessage}
+                </div>
+            )}
             {isLoading ? (
                 <p className="text-center text-gray-600">Loading...</p>
             ) : (
@@ -122,24 +127,21 @@ export default function ExistingRooms() {
                                         <td className="px-6 py-4">{room.id}</td>
                                         <td className="px-6 py-4">{room.roomType}</td>
                                         <td className="px-6 py-4">{room.roomPrice}</td>
-                                        <td className="px-6 py-4 flex justify-center gap-2">
+                                        <td className="px-6 py-4 flex justify-center items-center gap-4">
                                             <Link
-                                                to={`/edit-room/${room.id}`} 
-                                                className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md"
+                                                to={`/view-room/${room.id}`}
+                                                className="text-blue-500 hover:text-blue-700"
                                             >
-                                                <span 
-                                                    className="btn btn-info btn-sm"
-                                                >
-                                                    <FaEye />
-                                                </span>
-                                                <span 
-                                                    className="btn btn-warning btn-sm"
-                                                >
-                                                    <FaEdit />
-                                                </span>
+                                                <FaEye />
                                             </Link>
-                                            <button 
-                                                className="px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md"
+                                            <Link
+                                                to={`/edit-room/${room.id}`}
+                                                className="text-yellow-500 hover:text-yellow-700"
+                                            >
+                                                <FaEdit />
+                                            </Link>
+                                            <button
+                                                className="text-red-500 hover:text-red-700"
                                                 onClick={() => handleDelete(room.id)}
                                             >
                                                 <FaTrashAlt />
@@ -149,6 +151,16 @@ export default function ExistingRooms() {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+
+                    {/* 객실 추가 버튼 */}
+                    <div className="flex justify-end mt-4">
+                        <Link 
+                            to="/add-room"
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            객실 추가
+                        </Link>
                     </div>
 
                     {/* 객실 목록 페이징 */}
