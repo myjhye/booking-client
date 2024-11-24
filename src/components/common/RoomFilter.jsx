@@ -56,8 +56,8 @@ export default function RoomFilter({ data, setFilteredData }) {
                             onChange={() => handleSelect(type)}
                             className="hidden"
                         />
-                        {/* 버튼 텍스트 --> 빈 문자열이면 All로 표시 */}
-                        {type || "All"}
+                        {/* 버튼 텍스트 --> 빈 문자열이면 '전체'로 표시 */}
+                        {type || "전체"}
                     </label>
                 ))}
             </div>
