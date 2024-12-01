@@ -93,3 +93,77 @@ export async function getRoomById(roomId) {
         throw new Error(`개별 객실 정보를 가져오는데 실패했습니다: ${error.message}`)
     }
 }
+
+
+
+
+// 전체 객실 예약 정보 조회
+export async function getAllBookings() {
+    try {
+        const result = await api.get("/bookings/all-bookings")
+        return result.data
+    }
+    catch(error) {
+        if(error.response && error.response.data) {
+            throw new Error(error.response.data)
+        }
+        else {
+            throw new Error(`전체 객실 예약 정보 조회 에러 발생: ${error.message}`)
+        }
+    }
+}
+
+
+
+
+// 객실 예약 생성
+export async function bookRoom(roomId, booking) {
+
+    try {
+        const response = await api.post(`/bookings/room/${roomId}/booking`, booking)
+        return response.data
+    }
+    catch(error) {
+        if(error.response && error.response.data) {
+            throw new Error(error.response.data)
+        }
+        else {
+            throw new Error(`객실 예약 에러 발생: ${error.message}`)
+        }
+    }
+}
+
+
+// 예약 코드를 사용해 특정 예약의 상세 정보 조회
+export async function getBookingByConfirmationCode(confirmationCode) {
+    try {
+        const result = await api.get(`/bookings/confirmation/${confirmationCode}`)
+        return result.data
+    }
+    catch(error) {
+        if(error.response && error.response.data) {
+            throw new Error(error.response.data)
+        }
+        else {
+            throw new Error(`객실 예약 조회 에러 발생: ${error.message}`)
+        }
+    }
+}
+
+
+// 객실 예약 취소
+export async function cancelBooking(bookingId) {
+    try {
+        const result = await api.delete(`/bookings/booking/${bookingId}/delete`)
+        return result.data
+    }
+    catch(error) {
+        if(error.response && error.response.data) {
+            throw new Error(error.response.data)
+        }
+        else {
+            throw new Error(`객실 예약 취소 에러 발생: ${error.message}`)
+        }
+    }
+}
+
