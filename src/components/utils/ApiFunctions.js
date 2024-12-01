@@ -134,7 +134,7 @@ export async function bookRoom(roomId, booking) {
 }
 
 
-// 예약 코드를 사용해 특정 예약의 상세 정보 조회
+// 예약 코드로 해당 숙박 정보 조회
 export async function getBookingByConfirmationCode(confirmationCode) {
     try {
         const result = await api.get(`/bookings/confirmation/${confirmationCode}`)
