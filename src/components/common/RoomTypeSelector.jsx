@@ -3,23 +3,30 @@
 import { useEffect, useState } from "react"
 import { getRoomTypes } from "../utils/ApiFunctions";
 
-export default function RoomTypeSelector({ onRoomTypeChange }) {
+{/*
+    ===== props =====
+    onRoomTypeChange
+    - 객실 타입 변경 함수
+    - 선택된 타입을 받아 roomType 업데이트
+    
+    selectedType
+    - 현재 선택된 객실 타입 표시
+*/}
+export default function RoomTypeSelector({ onRoomTypeChange, selectedType }) {
     
     // 객실 유형 목록
     const [roomTypes, setRoomTypes] = useState([""]);
-    // 사용자가 선택한 객실 유형
-    const [selectedType, setSelectedType] = useState("");
 
     // 객실 유형 조회
     useEffect(() => {
-        getRoomTypes().then((data) => {
-            setRoomTypes(data);
-        })
+        getRoomTypes()
+            .then((data) => {
+                setRoomTypes(data);
+            })
     }, []);
     
     // 객실 유형 선택
     const handleSelect = (type) => {
-        setSelectedType(type);
         onRoomTypeChange(type);
     }
     
