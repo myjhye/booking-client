@@ -4,6 +4,15 @@ export const api = axios.create({
     baseURL: "http://localhost:8080"
 })
 
+
+export const getHeader = () => {
+    const token = localStorage.getItem("token")
+    return {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+    }
+}
+
 // 신규 객실 추가
 export async function addRoom(photo, roomType, roomPrice) {
     
@@ -167,3 +176,57 @@ export async function cancelBooking(bookingId) {
     }
 }
 
+
+
+// 예약 가능 객실 조회
+export async function getAvailableRooms(checkInDate, checkOutDate, roomType) {
+    const result = await api.get(`rooms/available-rooms?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&roomType=${roomType}`)
+	return result
+}
+
+
+
+// 회원가입
+export async function registerUser(registration) {
+    try {
+        const response = await api.post("/auth/register-user", registration)
+        return response.data
+    }
+    catch(error) {
+        if (error.response?.data) { 
+            throw new Error(error.response.data)
+        }
+        throw new Error(`User registration error: ${error.message}`)
+    }
+}
+
+
+
+// 로그인
+export async function loginUser(login) {
+    try {
+        const response = await api.post("/auth/login", login)
+        return response.data
+    }
+    catch(error) {
+        if (error.response?.status === 401) {
+            throw new Error("이메일 또는 비밀번호가 잘못되었습니다.")
+        }
+        // 다른 에러의 경우
+        throw new Error("로그인 중 오류가 발생했습니다.")
+    }
+}
+
+
+// 프로필 조회
+export async function getUserProfile(userId) {
+    try {
+        const response = await api.get(`users/profile/${userId}`, {
+            headers: getHeader()
+        })
+        return response.data
+    }
+    catch(error) {
+        throw error
+    }
+}
