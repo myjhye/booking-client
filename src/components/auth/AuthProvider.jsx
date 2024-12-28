@@ -12,16 +12,16 @@ export const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
 
     // 현재 로그인한 사용자 정보
-    const [user, setUser] = useState("")
+    const [user, setUser] = useState(null)
 
     // 로그인 처리
     const handleLogin = (token) => {
         try {
             // 1. JWT 토큰을 해석하여 사용자 정보 추출 (jwtDecode 함수 사용하여 )
             const decodedUser = jwtDecode(token) 
-
+            
             // 2. 사용자 정보를 localStorage에 저장 (새로고침 해도 로그인 유지)
-            localStorage.setItem("userId", decodedUser.sub) // 사용자 ID
+            localStorage.setItem("userEmail", decodedUser.sub) // 사용자 ID
             localStorage.setItem("userRole", decodedUser.roles) // 사용자 권한
             localStorage.setItem("token", token) // 원본 토큰
 
@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }) => {
     const handleLogout = () => {
         // localStorage에서 모든 인증 관련 정보 제거
         localStorage.removeItem("userId")
+        localStorage.removeItem("userEmail")
         localStorage.removeItem("userRole")
         localStorage.removeItem("token")
         setUser(null)
