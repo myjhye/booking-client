@@ -19,6 +19,9 @@ import Registration from './components/auth/Registration'
 import Profile from './components/auth/Profile'
 import { ProtectedRoute } from './components/routes/ProtectedRoute'
 import { AdminRoute } from './components/routes/AdminRoute'
+import AllBoards from './components/board/AllBoards'
+import CreateOrEditBoard from './components/board/CreateOrEditBoard'
+import BoardDetail from './components/board/BoardDetail'
 
 function App() {
   return (
@@ -66,6 +69,24 @@ function App() {
                 <ProtectedRoute>
                   <Bookings />
                 </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/inquiries" 
+              element={
+                  <AllBoards />
+              } 
+            />
+            <Route 
+              path="/inquiries/:boardId" 
+              element={
+                  <BoardDetail />
+              } 
+            />
+            <Route 
+              path="/inquiries/createOrEdit" 
+              element={
+                  <CreateOrEditBoard />
               } 
             />
 

@@ -15,7 +15,6 @@ export const getHeader = () => {
 
 // 신규 객실 추가
 export async function addRoom(photo, roomType, roomPrice) {
-    const token = localStorage.getItem('token')
     
     const formData = new FormData()
     formData.append("photo", photo)
@@ -288,6 +287,60 @@ export async function getUser(email) {
 export async function getBookingsByUserId(email) {
     try {
         const response = await api.get(`/bookings/user/${email}/bookings`, {
+            headers: getHeader()
+        })
+        return response.data
+    }   
+    catch (error) {
+        console.error("Error fetching bookings:", error.message)
+		throw new Error("Failed to fetch bookings")
+    }
+}
+
+
+// 게시글 생성
+export async function createBoard(boardData) {
+    try {
+        const response = await api.post("/boards/add/new-board", boardData, {
+            headers: getHeader()
+        });
+        return response.data;
+    }
+    catch(error) {
+        if(error.response && error.response.data) {
+            throw new Error(error.response.data)
+        }
+        else {
+            throw new Error(`Error creating a board: ${error.message}`)
+        }
+    }
+}
+
+
+
+// 게시글 전체 조회
+export async function getAllBoards() {
+    try {
+        const result = await api.get("/boards/all-boards", {
+            headers: getHeader()
+        })
+        return result.data
+    }
+    catch(error) {
+        if(error.response && error.response.data) {
+            throw new Error(error.response.data)
+        }
+        else {
+            throw new Error(`Error fetching all boards: ${error.message}`)
+        }
+    }
+}
+
+
+// 게시글 개별 조회
+export async function getBoardByBoardId(boardId) {
+    try {
+        const response = await api.get(`/boards/${boardId}`, {
             headers: getHeader()
         })
         return response.data
