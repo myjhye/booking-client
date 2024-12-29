@@ -346,7 +346,38 @@ export async function getBoardByBoardId(boardId) {
         return response.data
     }   
     catch (error) {
-        console.error("Error fetching bookings:", error.message)
-		throw new Error("Failed to fetch bookings")
+        console.error("Error fetching a board:", error.message)
+		throw new Error("Failed to fetch a board")
+    }
+}
+
+
+// 게시글 수정
+export async function updateBoard(boardId, boardData) {
+    try {
+        const response = await api.put(`/boards/${boardId}`, boardData, {
+            headers: getHeader()
+        })
+        return response.data;
+    }
+    catch (error) {
+        console.error("Error updating a board:", error.message)
+		throw new Error("Failed to update a board")
+    }
+}
+
+
+
+// 게시글 삭제
+export async function DeleteBoard(boardId) {
+    try {
+        const response = await api.delete(`/boards/${boardId}`, {
+            headers: getHeader()
+        })
+        return response.status === 204; // 삭제 성공시 204 No Content 반환
+    }
+    catch (error) {
+        console.error("Error deleting a board:", error.message)
+		throw new Error("Failed to delete a board")
     }
 }

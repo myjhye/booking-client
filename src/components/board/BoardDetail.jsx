@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { getBoardByBoardId } from '../utils/ApiFunctions';
+import { useNavigate, useParams } from 'react-router-dom';
+import { DeleteBoard, getBoardByBoardId } from '../utils/ApiFunctions';
 
 export default function BoardDetail() {
     const [data, setData] = useState(null);
@@ -9,6 +9,8 @@ export default function BoardDetail() {
     const { boardId } = useParams();
 
     const userEmail = localStorage.getItem("userEmail")
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
@@ -26,6 +28,30 @@ export default function BoardDetail() {
     const isAuthor = () => {
         return userEmail === data.user.email;
     };
+
+    // 수정 버튼 클릭
+    const handleEdit = () => {
+        navigate(`/boards/edit/${boardId}`, {
+            state: {
+                boardData: data
+            }
+        })
+    }
+
+    // 삭제 버튼 클릭
+    const handleDelete = async () => {
+        if (window.confirm('정말로 이 게시물을 삭제하시겠습니까?')) {
+            try {
+                const deleted = await DeleteBoard(boardId)
+                navigate('/boards')
+                alert('게시글이 성공적으로 삭제되었습니다.')
+            }
+            catch (error) {
+                alert('게시글 삭제 중 오류가 발생했습니다.');
+                console.error('Delete error:', error);
+            }
+        }
+    }
 
     return (
         <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
@@ -54,11 +80,13 @@ export default function BoardDetail() {
                     <div className="space-x-2">
                         <button 
                             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            onClick={handleEdit}
                         >
                             수정
                         </button>
                         <button 
                             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                            onClick={handleDelete}
                         >
                             삭제
                         </button>
