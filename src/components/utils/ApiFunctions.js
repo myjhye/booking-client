@@ -381,3 +381,74 @@ export async function DeleteBoard(boardId) {
 		throw new Error("Failed to delete a board")
     }
 }
+
+
+
+// 댓글 작성
+export async function CreateComment(commentData) {
+    try {
+        const response = await api.post("/comments/add/new-comment", commentData, {
+            headers: getHeader()
+        });
+        return response.data;
+    }
+    catch(error) {
+        if(error.response && error.response.data) {
+            throw new Error(error.response.data)
+        }
+        else {
+            throw new Error(`Error creating a comment: ${error.message}`)
+        }
+    }
+}
+
+
+
+// 댓글 전체 조회 (게시글별)
+export async function GetCommentsByBoardId(boardId) {
+    try {
+        const result = await api.get(`/comments/board/${boardId}`, {
+            headers: getHeader()
+        })
+        return result.data
+    }
+    catch(error) {
+        if(error.response && error.response.data) {
+            throw new Error(error.response.data)
+        }
+        else {
+            throw new Error(`Error fetching all comments: ${error.message}`)
+        }
+    }
+}
+
+
+// 댓글 수정
+export async function updateComment(commentId, commentData) {
+    try {
+        const response = await api.put(`/comments/${commentId}`, commentData, {
+            headers: getHeader()
+        })
+        return response.data;
+    }
+    catch (error) {
+        console.error("Error updating a comment:", error.message)
+		throw new Error("Failed to update a comment")
+    }
+}
+
+
+
+// 댓글 삭제
+export async function deleteComment(commentId) {
+    try {
+        const response = await api.delete(`/comments/${commentId}`, {
+            headers: getHeader()
+        })
+        return response.status === 204;
+    }
+    catch (error) {
+        console.error("Error deleting a comment:", error.message)
+		throw new Error("Failed to delete a comment")
+    }
+}
