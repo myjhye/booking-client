@@ -15,9 +15,13 @@ export default function BookingsTable({ bookingInfo, handleBookingCancellation }
         // 시작일과 종료일이 모두 선택된 경우에만 필터링 수행
         if (startDate && endDate) {
             const filtered = bookingInfo.filter((booking) => {
-                // 문자열 형태의 날짜를 Date 객체로 변환
-                const bookingStartDate = parseISO(booking.checkInDate)
-                const bookingEndDate = parseISO(booking.checkOutDate)
+
+                // 배열을 ISO 문자열 형식으로 변환
+                const checkInStr = `${booking.checkInDate[0]}-${String(booking.checkInDate[1]).padStart(2, '0')}-${String(booking.checkInDate[2]).padStart(2, '0')}`;
+                const checkOutStr = `${booking.checkOutDate[0]}-${String(booking.checkOutDate[1]).padStart(2, '0')}-${String(booking.checkOutDate[2]).padStart(2, '0')}`;
+                
+                const bookingStartDate = parseISO(checkInStr);
+                const bookingEndDate = parseISO(checkOutStr);
                 
                 // 선택된 날짜 범위 내의 예약만 필터링
                 return bookingStartDate >= startDate 
