@@ -1,8 +1,6 @@
-# React + Vite
+# Hotel Booking Site <br />
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+📓 보고서: https://drive.google.com/file/d/1pHO4aQfDP1vaEyiA52RHLPYthqMSyq3e/view?usp=drive_link <br />
+📓 기능별 코드: https://hmmmmmmmmmmmm.tistory.com/category/booking <br /><br />
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![image](https://github.com/user-attachments/assets/b9cf0a5d-12de-44db-af8a-cf217fabc76a)
